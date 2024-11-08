@@ -1,14 +1,14 @@
 import express, { Request, Response, Application, NextFunction } from "express";
 import dotenv from "dotenv";
 import crypto from "crypto";
-import bodyParser from "body-parser";
+// import { Message as MessageType } from "./types";
+import { dataSource } from "./app-data-source";
+import { Message } from "./entity/message.entity";
 dotenv.config();
 
 const app: Application = express();
 
 const port = process.env.PORT || 3000;
-
-type Message = { text: string; id: string };
 
 // CORS middleware
 const allowCrossDomain = (_: Request, res: Response, next: NextFunction) => {
@@ -18,9 +18,16 @@ const allowCrossDomain = (_: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const messages: Message[] = [];
+dataSource
+  .initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization:", err);
+  });
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(allowCrossDomain);
 
@@ -28,16 +35,20 @@ app.get("/ping", (_: Request, res: Response) => {
   res.send("Ping");
 });
 
-app.post("/message", (req: Request, res: Response) => {
+app.post("/message", async (req: Request, res: Response) => {
   const { text } = req.body as { text: string };
-  const newMessage = { text, id: crypto.randomUUID() };
 
-  messages.push(newMessage);
+  const messageRepository = dataSource.getRepository(Message);
+  const newMessage = messageRepository.create({ text });
 
-  res.send(newMessage);
+  const result = await messageRepository.save(newMessage);
+
+  res.send(result);
 });
 
-app.get("/message", (_: Request, res: Response) => {
+app.get("/message", async (_: Request, res: Response) => {
+  const messages = await dataSource.getRepository(Message).find();
+
   res.send(messages);
 });
 

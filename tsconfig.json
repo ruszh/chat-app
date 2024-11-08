@@ -1,6 +1,7 @@
 {
-  "exclude": ["index.ts"],
+  "exclude": ["src/app.ts"],
   "compilerOptions": {
+    "lib": ["es5", "es6", "dom"],
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */
@@ -108,6 +109,9 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }
