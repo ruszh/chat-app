@@ -1,4 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  CreateDateColumn,
+  Column,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 import { IsEmail } from "class-validator";
 
@@ -13,6 +18,12 @@ export class User {
   @Column()
   @IsEmail()
   email!: string;
+
+  @Column({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  createdAt!: Date;
 
   @Column()
   password!: string;
