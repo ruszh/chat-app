@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { port } from "../constants";
 import jwt from "jsonwebtoken";
-import { AuthUserData, RequestWithUser } from "../types";
+import { User } from "../types";
 
 // CORS middleware
 export const allowCrossDomain = (
@@ -20,19 +20,19 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
-  const token = req.header("Authorization");
+  const { accessToken } = req.cookies;
 
-  if (!token) {
+  if (!accessToken) {
     res.status(401).json({ error: "Access denied" });
   }
 
   try {
     const decodedTokenData = jwt.verify(
-      token?.split(" ")?.[1] || "",
+      accessToken,
       process.env.JWT_TOKEN_SECRET as string
     );
 
-    (req as RequestWithUser).user = decodedTokenData as AuthUserData;
+    req.user = decodedTokenData as User;
     next();
   } catch (error) {
     res.status(401).json({ error: "Invalid token" });

@@ -1,11 +1,12 @@
+import "./types/express";
 import express, { Request, Response, Application } from "express";
 import dotenv from "dotenv";
 import { dataSource } from "./app-data-source";
-import { Message } from "./entity/message.entity";
 import { allowCrossDomain } from "./middlewares";
 import { port } from "./constants";
-
+import cookieParser from "cookie-parser";
 import { authRoutes, protectedRoutes } from "./routes";
+
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ dataSource
   });
 
 app.use(express.json());
-
+app.use(cookieParser());
 app.use(allowCrossDomain);
 
 app.get("/ping", (_: Request, res: Response) => {

@@ -15,6 +15,6 @@ export class ChatsUsers {
   @ManyToOne(() => User, (user) => user)
   user!: User;
 
-  @OneToOne(() => Chat, (chat) => chat)
+  @ManyToOne(() => Chat, (chat) => chat)
   chat!: Chat;
 }

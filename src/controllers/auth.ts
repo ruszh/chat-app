@@ -62,7 +62,7 @@ export default class AuthController {
       return;
     }
 
-    const accessToken = generateAccessToken({ email, id: user.id });
+    const accessToken = generateAccessToken(user);
 
     const refreshToken = generateRefreshToken();
 
@@ -73,11 +73,15 @@ export default class AuthController {
 
     await tokenRepository.save(newToken);
 
-    res.send({ refreshToken, accessToken });
+    res.cookie("refreshToken", refreshToken);
+    res.cookie("accessToken", accessToken);
+
+    res.send();
   };
   static refreshToken = async (req: Request, res: Response) => {
-    const { refreshToken } = req.body as { refreshToken: string };
     const tokenRepository = dataSource.getRepository(Token);
+
+    const { refreshToken } = req.cookies;
 
     const token = await tokenRepository.findOne({
       where: { refreshToken },
@@ -89,9 +93,7 @@ export default class AuthController {
       return;
     }
 
-    const { email, id } = token.user;
-
-    const newAccessToken = generateAccessToken({ email, id });
+    const newAccessToken = generateAccessToken(token.user);
 
     const newRefreshToken = generateRefreshToken();
 
@@ -103,9 +105,9 @@ export default class AuthController {
     await tokenRepository.save(newToken);
     await tokenRepository.remove(token);
 
-    res.send({
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    });
+    res.cookie("refreshToken", newRefreshToken);
+    res.cookie("accessToken", newAccessToken);
+
+    res.send();
   };
 }
