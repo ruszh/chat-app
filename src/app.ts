@@ -7,7 +7,6 @@ import { port } from "./constants";
 import cookieParser from "cookie-parser";
 import { authRoutes, protectedRoutes } from "./routes";
 
-
 dotenv.config();
 
 const app: Application = express();
