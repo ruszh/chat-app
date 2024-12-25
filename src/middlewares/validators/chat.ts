@@ -1,9 +1,14 @@
 import { NextFunction, Response, Request } from "express";
-import { dataSource } from "../../app-data-source";
+import { dataSource } from "../../lib/app-data-source";
 import { Chat } from "../../entity/chat.entity";
 import { ChatsUsers } from "../../entity/chatsUsers.entity";
 import { User } from "../../entity/user.entity";
 import { mapUserData } from "../../utils/common";
+import {
+  chatRepository,
+  userRepository,
+  chatsUsersRepository,
+} from "../../lib/repositories";
 
 export const createChatValidator = (
   req: Request,
@@ -28,10 +33,6 @@ export const inviteUserToChatValidator = async (
   const { id: chatId } = req.params;
 
   const { userId } = req.body as { userId: string };
-
-  const chatRepository = dataSource.getRepository(Chat);
-  const chatsUsersRepository = dataSource.getRepository(ChatsUsers);
-  const userRepository = dataSource.getRepository(User);
 
   const chat = await chatRepository.findOne({
     relations: {
@@ -83,8 +84,6 @@ export const updateChatValidator = async (
     return;
   }
 
-  const chatRepository = dataSource.getRepository(Chat);
-
   const chat = await chatRepository.findOne({
     relations: { creator: true },
     where: { id, creator: mapUserData(req.user) },
@@ -104,8 +103,6 @@ export const deleteChatValidator = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-
-  const chatRepository = dataSource.getRepository(Chat);
 
   const chat = await chatRepository.findOne({
     relations: { creator: true },

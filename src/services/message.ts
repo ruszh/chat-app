@@ -1,4 +1,4 @@
-import { dataSource } from "../app-data-source";
+import { dataSource } from "../lib/app-data-source";
 import { Message } from "../entity/message.entity";
 import { Chat } from "../entity/chat.entity";
 import { User } from "../types";

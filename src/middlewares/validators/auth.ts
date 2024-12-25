@@ -1,8 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcrypt";
-import { dataSource } from "../../app-data-source";
-import { User } from "../../entity/user.entity";
-import { Token } from "../../entity/token.entity";
+import { userRepository, tokenRepository } from "../../lib/repositories";
 
 export const registrationValidator = async (
   req: Request,
@@ -18,8 +16,6 @@ export const registrationValidator = async (
     res.status(400).send("Email and password are required");
     return;
   }
-
-  const userRepository = dataSource.getRepository(User);
 
   const existedUser = await userRepository.findOne({
     where: { email },
@@ -48,8 +44,6 @@ export const loginValidator = async (
     return;
   }
 
-  const userRepository = dataSource.getRepository(User);
-
   const user = await userRepository.findOne({
     where: { email },
   });
@@ -75,7 +69,6 @@ export const refreshTokenValidator = async (
   next: NextFunction
 ) => {
   const { refreshToken } = req.cookies;
-  const tokenRepository = dataSource.getRepository(Token);
 
   const token = await tokenRepository.findOne({
     where: { refreshToken },

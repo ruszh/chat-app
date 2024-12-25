@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { dataSource } from "../app-data-source";
+import { dataSource } from "../lib/app-data-source";
 import { User } from "../entity/user.entity";
 import { Token } from "../entity/token.entity";
 import { generateAccessToken, generateRefreshToken } from "../utils/auth";

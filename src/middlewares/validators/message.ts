@@ -1,7 +1,8 @@
 import { NextFunction, Response, Request } from "express";
-import { dataSource } from "../../app-data-source";
+import { dataSource } from "../../lib/app-data-source";
 import { Message } from "../../entity/message.entity";
 import { Chat } from "../../entity/chat.entity";
+import { messageRepository, chatRepository } from "../../lib/repositories";
 
 export const createMessageValidator = async (
   req: Request,
@@ -18,9 +19,6 @@ export const createMessageValidator = async (
     res.status(400).send("Text and chatId are required");
     return;
   }
-
-  const messageRepository = dataSource.getRepository(Message);
-  const chatRepository = dataSource.getRepository(Chat);
 
   const chat = await chatRepository.findOne({
     where: { id: chatId },

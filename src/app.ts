@@ -1,7 +1,7 @@
 import "./types/express";
 import express, { Request, Response, Application } from "express";
 import dotenv from "dotenv";
-import { dataSource } from "./app-data-source";
+import { dataSource } from "./lib/app-data-source";
 import { allowCrossDomain } from "./middlewares";
 import { port } from "./constants";
 import cookieParser from "cookie-parser";
