@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
-import { MessageStatus } from "../constants";
 import { User } from "./user.entity";
 
 @Entity()

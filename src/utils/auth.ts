@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
 import { User } from "../types";
 
-export const generateAccessToken = (user?: User) => {
+export const generateAccessToken = (user?: User | null) => {
   const newUser = { ...user };
 
   delete newUser.password;

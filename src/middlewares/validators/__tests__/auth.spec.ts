@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import httpMocks from "node-mocks-http";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import {
   registrationValidator,

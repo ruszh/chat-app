@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { dataSource } from "../lib/app-data-source";
 import { User } from "../entity/user.entity";
 import { Token } from "../entity/token.entity";

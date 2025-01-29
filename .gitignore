@@ -22,3 +22,5 @@ dist
 .env.local
 
 .DS_Store
+
+database

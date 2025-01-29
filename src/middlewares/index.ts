@@ -1,7 +1,8 @@
 import { NextFunction, Response, Request } from "express";
-import { port } from "../constants";
 import jwt from "jsonwebtoken";
 import { User } from "../types";
+
+const port = process.env.PORT || 3000;
 
 // CORS middleware
 export const allowCrossDomain = (

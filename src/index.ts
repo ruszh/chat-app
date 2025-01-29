@@ -1,15 +1,17 @@
+import "reflect-metadata";
 import "./types/express";
 import express, { Request, Response, Application } from "express";
 import dotenv from "dotenv";
 import { dataSource } from "./lib/app-data-source";
 import { allowCrossDomain } from "./middlewares";
-import { port } from "./constants";
 import cookieParser from "cookie-parser";
 import { authRoutes, protectedRoutes } from "./routes";
 
 dotenv.config();
 
 const app: Application = express();
+
+const port = process.env.PORT || 3000;
 
 dataSource
   .initialize()

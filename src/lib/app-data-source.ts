@@ -1,7 +1,11 @@
-import "reflect-metadata";
 import dotenv from "dotenv";
 
 import { DataSource } from "typeorm";
+import { User } from "../entity/user.entity";
+import { Chat } from "../entity/chat.entity";
+import { Message } from "../entity/message.entity";
+import { ChatsUsers } from "../entity/chatsUsers.entity";
+import { Token } from "../entity/token.entity";
 
 dotenv.config();
 
@@ -12,6 +16,6 @@ export const dataSource = new DataSource({
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: ["src/entity/*.ts"],
+  entities: [User, Chat, Message, ChatsUsers, Token],
   synchronize: true,
 });

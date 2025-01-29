@@ -1,0 +1,44 @@
+services:
+  db:
+    container_name: chat-app-database
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+    volumes:
+      - ./database:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - default
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 30s
+      interval: 5s
+      timeout: 60s
+      retries: 5
+
+  server:
+    container_name: chat-app-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_HOST}
+      JWT_TOKEN_SECRET: ${JWT_TOKEN_SECRET}
+    ports:
+      - 3001:3001
+    networks:
+      - default
+    depends_on:
+      db:
+        condition: service_healthy
+
+networks:
+  default:
+    driver: bridge

@@ -2,7 +2,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToOne,
 } from "typeorm";
 import { User } from "./user.entity";
 import { Chat } from "./chat.entity";
